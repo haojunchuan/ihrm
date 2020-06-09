@@ -1,6 +1,7 @@
 server:
   port: 9002
 
+
 spring:
   application:
     name: ihrm_system

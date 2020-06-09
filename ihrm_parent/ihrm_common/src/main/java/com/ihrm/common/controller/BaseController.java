@@ -20,6 +20,8 @@ public class BaseController {
     public void setReqAndRes(HttpServletRequest request,HttpServletResponse rewponse){
         this.request=request;
         this.respones=rewponse;
+        this.companyId="1";
+        this.companyName="江苏传智播客教育股份有限公司";
 
     }
 
