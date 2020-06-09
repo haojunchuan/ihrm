@@ -1,0 +1,15 @@
+server:
+  port: 9002
+
+spring:
+  application:
+    name: ihrm_system
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.204.129:3306/ihrm?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456
+  jpa:
+    database: mysql
+    show-sql: true
+    open-in-view: true
