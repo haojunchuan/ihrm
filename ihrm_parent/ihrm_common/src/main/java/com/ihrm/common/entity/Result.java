@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
  *      }
  *    }
  */
-@Data
 @NoArgsConstructor
+@Data
 public class Result {
 
     private boolean success;//是否成功
