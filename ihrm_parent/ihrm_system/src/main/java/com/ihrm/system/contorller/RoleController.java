@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jack hao
@@ -94,4 +95,18 @@ public class RoleController extends BaseController {
         return new Result(ResultCode.SUCCESS,pr);
     }
 
+
+    /**
+     *分配权限
+     */
+    @PutMapping("/role/assignRole")
+    public Result assignRole(@RequestBody Map<String ,Object> map){
+        //1.获取权限id
+        String uid= (String) map.get("id");
+        //2.获取权限列表
+        List<String> list= (List<String>) map.get("permIds");
+
+        roleService.assignPerm(uid,list);
+        return new Result(ResultCode.SUCCESS);
+    }
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Map;
  * @createTime 2020-06-10-0:28
  */
 @RestController
-@RequestMapping("/system")
+@RequestMapping("/sys")
 @CrossOrigin
 @Api("系统操作")
 public class UserController extends BaseController {
@@ -91,6 +92,20 @@ public class UserController extends BaseController {
     @DeleteMapping("/department/{id}")
     public Result deleteById(@PathVariable("id") String id){
         userService.deleteById(id);
+        return new Result(ResultCode.SUCCESS);
+    }
+
+    /**
+     *分配角色
+     */
+    @PutMapping("/user/assignRole")
+    public Result assignRole(@RequestBody Map<String ,Object> map){
+        //1.获取用户id
+        String uid= (String) map.get("id");
+        //2.获取角色列表
+        List<String> list= (List<String>) map.get("roleIds");
+
+        userService.assignRole(uid,list);
         return new Result(ResultCode.SUCCESS);
     }
 }

@@ -2,14 +2,20 @@ package com.ihrm.system.service;
 
 import com.ihrm.common.service.BaseService;
 import com.ihrm.common.utils.IdWorker;
+import com.ihrm.common.utils.PermissionConstants;
+import com.ihrm.domain.system.Permission;
 import com.ihrm.domain.system.Role;
+import com.ihrm.system.dao.PermissionDao;
 import com.ihrm.system.dao.RoleDao;
+import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author jack hao
@@ -19,6 +25,9 @@ import java.util.List;
 public class RoleService extends BaseService<Role> {
     @Autowired
     private RoleDao roleDao;
+
+    @Autowired
+    private PermissionDao permissionDao;
 
     @Autowired
     private IdWorker idWorker;
@@ -71,5 +80,30 @@ public class RoleService extends BaseService<Role> {
 
     public Page<Role> findByPage(String companyId,Integer pageNum,Integer pageSize){
         return roleDao.findAll(getSpec(companyId),PageRequest.of(pageNum,pageSize));
+    }
+
+    /**
+     * 分配权限
+     * @param rid
+     * @param list
+     */
+    public void assignPerm(String rid, List<String> list) {
+        Role role = roleDao.findById(rid).get();
+        Set<Permission> pers=new HashSet<>();
+        for(String permId : list){
+            Permission permission = permissionDao.findById(permId).get();
+
+            //需要根据父id和类型查询API权限列表
+            List<Permission> permApi = permissionDao.findByTypeAndPid(PermissionConstants.PY_API, permission.getPid());
+            pers.addAll(permApi);//自动赋予改角色API权限
+
+            pers.add(permission);//当前菜单或按钮权限
+        }
+
+        //设置角色和权限的关系
+        role.setPermissions(pers);
+
+        //更新角色
+        roleDao.save(role);
     }
 }
