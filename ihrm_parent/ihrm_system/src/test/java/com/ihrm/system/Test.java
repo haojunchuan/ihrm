@@ -3,7 +3,9 @@ package com.ihrm.system;
 import com.ihrm.common.exception.CommonException;
 import com.ihrm.domain.system.Permission;
 import com.ihrm.domain.system.Role;
+import com.ihrm.domain.system.User;
 import com.ihrm.system.dao.PermissionDao;
+import com.ihrm.system.dao.UserDao;
 import com.ihrm.system.service.PermissionService;
 import com.ihrm.system.service.RoleService;
 import org.junit.runner.RunWith;
@@ -31,6 +33,9 @@ public class Test {
     @Autowired
     private PermissionDao permissionDao;
 
+    @Autowired
+    private UserDao userDao;
+
     @org.junit.Test
     public void test(){
         List<Role> all = roleService.findAll("1");
@@ -48,7 +53,7 @@ public class Test {
 
     @org.junit.Test
     public void test3(){
-        Permission permission = permissionDao.findById("1").get();
-        System.out.println(permission);
+        User byMobile = userDao.findByMobile("13500000001");
+        System.out.println(byMobile.getCreateTime());
     }
 }

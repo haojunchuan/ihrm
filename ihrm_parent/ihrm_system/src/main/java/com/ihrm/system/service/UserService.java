@@ -62,7 +62,12 @@ public class UserService extends BaseService<User> {
      * 3.根据id查询部门
      */
     public User findById(String id){
-        return userDao.findById(id).get();
+        Optional<User> option = userDao.findById(id);
+        if(option != null && option.isPresent()){
+            return option.get();
+        }
+        return null;
+
     }
     /**
      * 4.根据条件查询用户
@@ -112,5 +117,12 @@ public class UserService extends BaseService<User> {
         user.setRoles(roles);
         //3.更新用户
         userDao.save(user);
+    }
+
+    /**
+     * 根据mobile查询用户
+     */
+    public User findByMobile(String mobile){
+        return userDao.findByMobile(mobile);
     }
 }
